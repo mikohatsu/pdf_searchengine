@@ -1,0 +1,39 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<center>
+    <h4><br>[{{search_term}}] 검색 시 총 {{ res['hits']['total']['value'] }} 건을 찾았습니다. </h4>
+</center>
+
+<table class="table" id="table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>제목</th>
+            <th>Content</th>
+        </tr>
+    </thead>
+    {% for hit in res['hits']['hits'] %}
+    {% set v=hit['_source']['title'] %}
+    {% if v == None %}
+    {% set v="뭔책이지" %}
+    {% endif %}
+    {% set no = hit['_id'] %}
+
+    <tbody id="mytable">
+        <tr>
+            <td>{{no}}</td>
+            <td id="책제목">{{v}}</td>
+            <td><div id="textb" class="textbox" cols="40" wrap="hard" readonly>
+                    {% for ss in hit['inner_hits']['pages']['hits']['hits'] %}
+                    {% for s in ss['highlight']['pages.content'] %}
+                    {{s|safe}}
+                    {% endfor %}
+                    <b>- {{ss['_source']['pagenumber']}}P</b><br>
+                    {% endfor %}
+                </div></td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+{% endblock %}

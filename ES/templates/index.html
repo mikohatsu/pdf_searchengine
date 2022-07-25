@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Pacifico">
+    <!--<link rel="icon" href=".ico">-->
+    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+
+    <title>Jimyeung Keyword Search</title>
+
+
+    <script type="text/javascript">
+
+        $(document).on('click','.toggleBG',function(){
+            var toggleBG = $(this);
+            var toggleFG = $(this).find('.toggleFG');
+            var left = toggleFG.css('left');
+            if(left == '40px'){
+                toggleBG.css('background','#CCCCCC');
+                toggleActionStart(toggleFG,'TO_LEFT');
+            }
+            else if(left=='0px'){
+                toggleBG.css('background','#53FF4C');
+                toggleActionStart(toggleFG,'TO_RIGHT');
+            }
+        });
+        // 토글 버튼 이동 모션 함수
+        function toggleActionStart(toggleBtn,LR){
+            // 0.01초 단위로 실행    
+            var intervalID = setInterval(
+                function(){
+                    // 버튼 이동            
+                    var left=parseInt(toggleBtn.css('left'));
+                    left += (LR=='TO_RIGHT') ? 5 : -5;
+                    if(left >= 0 && left <= 40){
+                        left+='px';
+                        toggleBtn.css('left',left);
+                    }
+                }, 10);
+            setTimeout(function(){
+                clearInterval(intervalID);
+            }, 201);
+        }
+        function getToggleBtnState(toggleBtnId){
+            const left_px = parseInt( $('#'+toggleBtnId).css('left'));
+            return (left_px > 0)? 'off' : 'on';
+        }
+
+    </script>
+
+    <style type="text/css" >
+        p {
+            width: 800px;
+            text-align: center;
+            left:50%;
+            margin: 0 auto;
+
+        }
+
+        textarea {
+            width: 950px;
+            height: 450px;
+
+        }
+
+        * {
+            font-family: "맑은고딕 semilight";
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .toggleBG{
+            background: #CCCCCC; 
+            width: 70px; 
+            height: 30px; 
+            border: 1px solid #CCCCCC; 
+            border-radius: 15px;
+        }
+        .toggleFG{
+            background: #FFFFFF;
+            width: 30px;
+            height:30px;
+            border:none;
+            border-radius:15px;
+            position:relative;
+            left:0px;
+        }
+        
+        label {
+            display: flex;
+            align-items: center;
+            position: relative;
+            top: 30px;
+            left: 30px;
+            transition: .5s;
+        }
+
+        .icons {
+            font-size: 3rem;
+            margin-right: 10px;
+        }
+
+        .bookmark-btt {
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-size: 3rem;
+        }
+
+        section {
+            background-color: #34495e;
+            color: #fff;
+            width: 300px;
+            padding-top: 30px;
+            padding-left: 30px;
+            position: absolute;
+            top: 0;
+            left: -300px;
+            bottom: 0;
+            transition: 1s ease;
+        }
+        
+        .bookmark-list {
+            padding-left: 45px;
+        }
+        .bookmark {
+            margin: 30px 0;
+        }
+        .bookmark:nth-child(1){
+            margin-top: 50px;
+        }
+        .bookmark a {
+            color: #fff;
+            text-decoration: none;
+        }
+    </style>
+
+
+
+</head>
+
+<body ng-app="myApp" ng-controller="myCtrl">
+
+    <div>
+        <label><span class = "icons">menu</span><input type="button" class="bookmark-btt"></label>
+        <section>
+            <h1>menu</h1>
+        <ul class="bookmark-list">
+            <li class="bookmark"><a href="{{ url_for('pdf_list') }}">전체 PDF 목록</a></li>
+            <li class="bookmark"><a href="#!">지역별 검색</a></li>
+            <li class="bookmark"><a href="#!">DEFALUT</a></li>
+        </ul>
+        </section>
+    </div>
+
+    <div class="container">
+        <div style="background:transparent !important" class="jumbotron">
+            <div style="font-family: 'Pacifico', cursive;">
+                <p><a href="{{ url_for('index') }}">
+                    <font size="5" style="font-weight: bold;">Jimyeung Keyword Search: 지명 작업을 위한 검색엔진</font>
+                </a></p>
+            </div>
+        </div>
+
+
+        {% block searchbar %}
+        <form action="/results" method="post">
+            <div class="toggleBG">
+                <button class="toggleFG" type="button" id="isall-btn" onclick="document.getElementById('isall-btn').innerText=getToggleBtnState('isall-btn'); 
+                                                                                document.getElementById('isall-hid').setAttribute('value',getToggleBtnState('isall-btn'));">off</button>
+                <input type="hidden" name="isall" id="isall-hid" value="off">
+            </div><!--<label for="isall-hid">관련내용 검색</label><label for="isall-btn"></label>-->
+            <div class="input-group">
+                <input type="text" class="form-control input-lg" id="input" name="input" placeholder="지명을 입력하세요."
+                    autofocus>
+                <div class="input-group-btn">
+                    <button class="btn btn-primary btn-lg " id="button" type="submit">
+                        <i class="glyphicon glyphicon-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        {% endblock %}
+        {% block content %}{% endblock %}
+
+        <footer class="footer">
+        </footer>
+    </div>
+    <script type="text/javascript" src="../static/js/app.js"></script>
+</body>
+
+</html>

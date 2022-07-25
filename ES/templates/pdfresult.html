@@ -1,0 +1,29 @@
+{% extends 'index.html' %}
+{% block searchbar %}
+<form action="/pdfview" method="post">
+    <div class="toggleBG">
+        <button class="toggleFG" type="submit" id="isall-btn">off</button>
+        <input type="hidden" name="isall" id="isall-hid" value="off">
+    </div><!--<label for="isall-hid">관련내용 검색</label><label for="isall-btn"></label>-->
+</form>
+{% endblock %}
+{% block content %}
+<table class="table" id="allpdf">
+    <thead>
+        <tr>
+            <th>page</th>
+            <th>content</th>
+        </tr>
+    </thead>
+    {% for page in pdffile['_source']['pages'] %}
+    {% set p = page['pagenumber'] %}
+    {% set con = page['content'] %}
+    <tbody>
+        <tr>
+            <td>{{p}}</td>
+            <td>{{con}}</td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+{% endblock %}

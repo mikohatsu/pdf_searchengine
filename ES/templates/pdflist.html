@@ -1,0 +1,30 @@
+{% extends 'index.html' %}
+{% block searchbar %}{% endblock %}
+
+{% block content %}
+<table class="table" id="table">
+    <thead>
+        <tr>
+            <th>No.</th>
+            <th>제목</th>
+        </tr>
+    </thead>
+    {% for hit in pdflist %}
+    {% set v=hit['_source']['title'] %}
+    {% if v == None %}
+    {% set v="뭔책이지" %}
+    {% endif %}
+    {% set no = hit['_id'] %}
+
+    <tbody id="mytable">
+        <tr>
+            <td>{{no}}</td>
+            <td><form action ="/pdfsearch" method = "POST" id="pdfgo">
+                <button type="submit" id="pdfbtn" name="pdfbtn" value={{no}}>{{v}}</button></form>
+            </td>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
+
+{% endblock %}

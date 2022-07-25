@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block searchbar %}
+<form action="/pdfview" method="post">
+    <div class="toggleBG">
+        <button class="toggleFG" type="button" id="isall-btn" onclick="document.getElementById('isall-btn').innerText=getToggleBtnState('isall-btn'); 
+                                                                        document.getElementById('isall-hid').setAttribute('value',getToggleBtnState('isall-btn'));">off</button>
+        <input type="hidden" name="isall" id="isall-hid" value="off">
+    </div><!--<label for="isall-hid">관련내용 검색</label><label for="isall-btn"></label>-->
+</form>
+{% endblock %}
+{% block content %}
+<iframe src="../../새한_오프라인/1. 韓國地名要覽_OCR.pdf" style="width:1200px;height:1200px;"></iframe>
+{% endblock %}
