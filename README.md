@@ -1,6 +1,7 @@
 # pdf_searchengine
 
 방대한 양의 pdf 파일에서 원하는 내용을 빨리 찾을 수 있도록 만든 pdf 검색엔진
+A pdf search engine that allows you to quickly find what you want from a huge amount of pdf files
 
 - search.py - Flask/ElasticSearch Server
 - test.py - read PDF file and convert to Elastic Document
